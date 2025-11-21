@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Diabetes Companion</title>
+</head>
+<body>
+  <h1>Diabetes Companion</h1>
+
+  <form id="report-form">
+    <label>
+      Disease:
+      <select id="disease">
+        <option value="diabetes">Diabetes</option>
+      </select>
+    </label>
+    <br />
+
+    <label>
+      Age:
+      <input type="number" id="age" />
+    </label>
+    <br />
+
+    <label>
+      Upload PDF report:
+      <input type="file" id="report-file" accept="application/pdf" />
+    </label>
+    <br />
+
+    <button type="submit">Upload & Analyze</button>
+  </form>
+
+  <section id="results" style="display:none;">
+    <h2>Summary</h2>
+    <p id="summary"></p>
+
+    <h2>Advice</h2>
+    <p id="advice"></p>
+  </section>
+
+  <script src="app.js"></script>
+</body>
+</html>
