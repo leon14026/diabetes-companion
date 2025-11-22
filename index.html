@@ -2,43 +2,97 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Diabetes Companion</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet" />
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    .animate-fade-in { animation: fadeIn 0.5s ease-out forwards; }
+  </style>
 </head>
-<body>
-  <h1>Diabetes Companion</h1>
+<body class="bg-slate-50 min-h-screen flex items-center justify-center p-4">
+  <main class="bg-white w-full max-w-lg rounded-2xl shadow-xl overflow-hidden border border-slate-100">
+    <div class="bg-blue-600 p-6 text-center">
+      <h1 class="text-3xl font-bold text-white tracking-tight">Diabetes Companion</h1>
+      <p class="text-blue-100 mt-2 text-sm">AI-Powered Health Analysis</p>
+    </div>
 
-  <form id="report-form">
-    <label>
-      Disease:
-      <select id="disease">
-        <option value="diabetes">Diabetes</option>
-      </select>
-    </label>
-    <br />
+    <div class="p-8">
+      <form id="report-form" class="space-y-6">
+        <div>
+          <label class="block text-sm font-medium text-slate-700 mb-2">Condition / Disease</label>
+          <div class="relative">
+            <select id="disease" class="w-full bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-3 appearance-none outline-none">
+              <option value="diabetes">Diabetes (Type 2)</option>
+            </select>
+            <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-slate-500">
+              <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
+            </div>
+          </div>
+        </div>
 
-    <label>
-      Age:
-      <input type="number" id="age" />
-    </label>
-    <br />
+        <div>
+          <label class="block text-sm font-medium text-slate-700 mb-2">Patient Age</label>
+          <input
+            type="number"
+            id="age"
+            placeholder="e.g. 45"
+            class="w-full bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-3 outline-none transition-colors"
+          />
+        </div>
 
-    <label>
-      Upload PDF report:
-      <input type="file" id="report-file" accept="application/pdf" />
-    </label>
-    <br />
+        <div>
+          <label class="block text-sm font-medium text-slate-700 mb-2">Upload Lab Report (PDF)</label>
+          <input
+            type="file"
+            id="report-file"
+            accept="application/pdf"
+            class="block w-full text-sm text-slate-500
+              file:mr-4 file:py-2.5 file:px-4
+              file:rounded-full file:border-0
+              file:text-sm file:font-semibold
+              file:bg-blue-50 file:text-blue-700
+              hover:file:bg-blue-100 cursor-pointer"
+          />
+        </div>
 
-    <button type="submit">Upload & Analyze</button>
-  </form>
+        <button
+          type="button"
+          id="analyze-btn"
+          class="w-full text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-3.5 text-center transition-all shadow-md hover:shadow-lg"
+        >
+          Upload &amp; Analyze Report
+        </button>
+      </form>
 
-  <section id="results" style="display:none;">
-    <h2>Summary</h2>
-    <p id="summary"></p>
+      <section id="results" style="display:none;" class="mt-8 animate-fade-in">
+        <div class="border-t border-slate-200 pt-6">
+          <h2 class="text-xl font-bold text-slate-800 mb-4 flex items-center gap-2">
+            <span class="bg-green-100 text-green-600 p-1 rounded">✓</span> Analysis Results
+          </h2>
 
-    <h2>Advice</h2>
-    <p id="advice"></p>
-  </section>
+          <div class="space-y-4">
+            <div class="bg-slate-50 p-4 rounded-lg border border-slate-200">
+              <h3 class="text-xs font-bold text-slate-500 uppercase tracking-wide mb-1">Summary</h3>
+              <p id="summary" class="text-slate-800 leading-relaxed text-sm"></p>
+            </div>
 
-  <script src="app.js"></script>
+            <div class="bg-blue-50 p-4 rounded-lg border border-blue-100">
+              <h3 class="text-xs font-bold text-blue-600 uppercase tracking-wide mb-1">Actionable Advice</h3>
+              <p id="advice" class="text-slate-800 leading-relaxed text-sm"></p>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <footer class="fixed bottom-4 text-slate-400 text-xs text-center w-full">
+    Medical Disclaimer: Consult a doctor before making changes.
+  </footer>
+
+  <script src="./app.js" defer></script>
 </body>
 </html>

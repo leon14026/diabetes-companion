@@ -32,11 +32,7 @@ app.get("/", (req, res) => {
 });
 
 // Upload + analyze route
-app.post(
-  "/api/upload-report",
-  requireAuth,
-  upload.single("report"),
-  async (req, res) => {
+app.post("/api/upload-report", upload.single("report"), async (req, res) => {
     try {
       const { age, disease } = req.body;
       const file = req.file;
