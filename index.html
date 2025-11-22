@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Diabetes Companion</title>
   <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet" />
   <style>
     body { font-family: 'Inter', sans-serif; }
@@ -58,6 +59,15 @@
           />
         </div>
 
+        <div>
+          <label class="block text-sm font-medium text-slate-700 mb-2">Report Date (when labs were taken)</label>
+          <input
+            type="date"
+            id="report-date"
+            class="w-full bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-3 outline-none transition-colors"
+          />
+        </div>
+
         <button
           type="button"
           id="analyze-btn"
@@ -70,7 +80,8 @@
       <section id="results" style="display:none;" class="mt-8 animate-fade-in">
         <div class="border-t border-slate-200 pt-6">
           <h2 class="text-xl font-bold text-slate-800 mb-4 flex items-center gap-2">
-            <span class="bg-green-100 text-green-600 p-1 rounded">✓</span> Analysis Results
+            <span class="bg-green-100 text-green-600 px-2 py-1 rounded text-xs font-semibold">AI</span>
+            Analysis Results
           </h2>
 
           <div class="space-y-4">
@@ -82,6 +93,32 @@
             <div class="bg-blue-50 p-4 rounded-lg border border-blue-100">
               <h3 class="text-xs font-bold text-blue-600 uppercase tracking-wide mb-1">Actionable Advice</h3>
               <p id="advice" class="text-slate-800 leading-relaxed text-sm"></p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div class="bg-white p-4 rounded-lg border border-slate-200 shadow-sm">
+                <h3 class="text-xs font-bold text-slate-500 uppercase tracking-wide mb-2">Report Snapshot</h3>
+                <p class="text-sm text-slate-600"><span class="font-semibold">Report date:</span> <span id="report-date-label">-</span></p>
+                <p class="text-sm text-slate-600 mt-1"><span class="font-semibold">HbA1c detected:</span> <span id="hba1c-value">Not detected</span></p>
+              </div>
+
+              <div class="bg-emerald-50 p-4 rounded-lg border border-emerald-100 shadow-sm">
+                <h3 class="text-xs font-bold text-emerald-700 uppercase tracking-wide mb-2">Trend Summary</h3>
+                <p id="trend-summary" class="text-slate-800 leading-relaxed text-sm">No trend yet.</p>
+              </div>
+            </div>
+
+            <div class="bg-white p-4 rounded-lg border border-slate-200 shadow-sm">
+              <div class="flex items-center justify-between mb-3">
+                <div>
+                  <p class="text-xs font-bold text-slate-500 uppercase tracking-wide">HbA1c Over Time</p>
+                  <p class="text-xs text-slate-500">Based on saved reports</p>
+                </div>
+              </div>
+              <div class="relative h-64">
+                <canvas id="hba1c-chart"></canvas>
+                <p id="hba1c-empty" class="absolute inset-0 flex items-center justify-center text-slate-400 text-sm">No HbA1c history yet.</p>
+              </div>
             </div>
           </div>
         </div>
