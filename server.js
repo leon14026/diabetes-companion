@@ -6,7 +6,7 @@ import dotenv from "dotenv";
 
 import { supabase } from "./services/supabaseClient.js";
 import { extractTextFromPdf } from "./services/pdfService.js";
-import { getReportSummary } from "./services/anthropicService.js";
+import { getReportSummary, getTrendSummary } from "./services/anthropicService.js";
 import { requireAuth } from "./middleware/authMiddleware.js";
 
 dotenv.config();
@@ -190,12 +190,24 @@ app.post("/api/upload-report", upload.single("report"), async (req, res) => {
         console.error("Could not fetch previous summaries", summariesErr);
       }
 
-      const trendSummary = buildHbA1cTrendSummary(
+      // 7) Build trend summary via Anthropic, fall back to local heuristic
+      let trendSummary = buildHbA1cTrendSummary(
         hba1cHistory || [],
         previousSummaries || []
       );
 
-      // 7) Send to frontend
+      try {
+        trendSummary =
+          (await getTrendSummary({
+            disease,
+            hba1cHistory: hba1cHistory || [],
+            previousSummaries: previousSummaries || [],
+          })) || trendSummary;
+      } catch (trendErr) {
+        console.error("Trend summary via Anthropics failed, using fallback", trendErr);
+      }
+
+      // 8) Send to frontend
       res.json({
         summary: aiResult.summary,
         advice: aiResult.advice,
@@ -206,7 +218,7 @@ app.post("/api/upload-report", upload.single("report"), async (req, res) => {
         previousSummaries: previousSummaries || [],
       });
 
-      // 8) Delete local file to tidy up
+      // 9) Delete local file to tidy up
       fs.unlink(file.path, () => {});
     } catch (err) {
       console.error(err);
